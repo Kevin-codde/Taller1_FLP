@@ -1,4 +1,4 @@
-#lang racket
+#lang eopl
 #|
 
    Autores: Kevin Andres Bejarano - 2067678
@@ -21,7 +21,7 @@
 ;               chip−and()
 ;           := prim_not
 ;              chip−not()
-;            := prim_xor
+;           := prim_xor
 ;              chip−xor()
 ;           := prim_nand
 ;              chip−xor()
@@ -267,35 +267,35 @@
 
  (complex-circuit
  (simple-circuit
-  ' (m n o p)
-  ' (e f)
+  '(m n o p)
+  '(e f)
   (comp-chip
    '(INA INB INC IND)
    '(OUTE OUTF)
    (complex-circuit
-    (simple-circuit ' (a b) ' (e) (prim-chip (chip_and)))
+    (simple-circuit '(a b) '(e) (prim-chip (chip_and)))
     (list
-     (simple-circuit ' (c d) ' (f) (prim-chip (chip_and))))
-    ' (a b c d)
-    ' (e f))
+     (simple-circuit '(c d) '(f) (prim-chip (chip_and))))
+    '(a b c d)
+    '(e f))
 
    ))
  
  (list
   (simple-circuit
-   ' (e f)
-   ' (z)
+   '(e f)
+   '(z)
    (comp-chip
     '(INE INF)
     '(OUTA)
-    (simple-circuit ' (e f) ' (g) (prim-chip (chip_or)))
+    (simple-circuit '(e f) '(g) (prim-chip (chip_or)))
 
     )
 
    ))
  
- ' (m n o p)
- ' (z)))
+ '(m n o p)
+ '(z)))
 
 
 
