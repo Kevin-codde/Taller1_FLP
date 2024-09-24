@@ -227,6 +227,7 @@
 ;;Area Programador
 
 
+
 ;;ejem1
 
 (define cir1 (comp-chip
@@ -267,36 +268,87 @@
 
  (complex-circuit
  (simple-circuit
-  '(m n o p)
-  '(e f)
+  ' (m n o p)
+  ' (e f)
   (comp-chip
    '(INA INB INC IND)
    '(OUTE OUTF)
    (complex-circuit
-    (simple-circuit '(a b) '(e) (prim-chip (chip_and)))
+    (simple-circuit ' (a b) ' (e) (prim-chip (chip_and)))
     (list
-     (simple-circuit '(c d) '(f) (prim-chip (chip_and))))
-    '(a b c d)
-    '(e f))
+     (simple-circuit ' (c d) ' (f) (prim-chip (chip_and))))
+    ' (a b c d)
+    ' (e f))
 
    ))
  
  (list
   (simple-circuit
-   '(e f)
-   '(z)
+   ' (e f)
+   ' (z)
    (comp-chip
     '(INE INF)
     '(OUTA)
-    (simple-circuit '(e f) '(g) (prim-chip (chip_or)))
+    (simple-circuit ' (e f) ' (g) (prim-chip (chip_or)))
 
     )
 
    ))
  
- '(m n o p)
- '(z)))
+ ' (m n o p)
+ ' (z)))
 
 
+;; ejem3: Un circuito que utiliza XOR y NAND para combinar tres entradas
+(define cir3
+  (simple-circuit
+    '(A B C)         ; Entradas del circuito
+    '(OUT)           ; Salida del circuito
+    (comp-chip       
+      '(A B C)       
+      '(OUT)         
+      (complex-circuit
+        (simple-circuit '(A B) '(w1) (prim-chip (chip_xor))) ;
+        (list
+          (simple-circuit '(w1 C) '(w2) (prim-chip (chip_nand))) ;
+          (simple-circuit '(w2) '(OUT) (prim-chip (chip_or))))  ; 
+        '(A B C)      
+        '(OUT)))))    ; Salida del circuito complejo
+
+;; ejem4: Circuito de un sumador de medio usando XOR y AND
+(define cir4
+  (simple-circuit
+    '(A B)           ; Entradas del circuito (dos bits)
+    '(SUM CARRY)     ; Salidas del circuito (suma y acarreo)
+    (comp-chip       
+      '(A B)         ; Entradas del chip
+      '(SUM CARRY)   ; Salidas del chip
+      (complex-circuit
+        (simple-circuit '(A B) '(SUM) (prim-chip (chip_xor)))   ; XOR
+        (list
+          (simple-circuit '(A B) '(CARRY) (prim-chip (chip_and)))) ; AND
+        '(A B)        
+        '(SUM CARRY))))) 
 
 
+;;Ejemplo5
+(define cir5
+  (comp-chip
+    '(INA INB INC IND)   
+    '(OUT)               
+    (complex-circuit
+      ;; Parte 1: AND entre INA y INB
+      (simple-circuit '(INA INB) '(w1) (prim-chip (chip_and)))  ; w1 = INA AND INB
+
+      ;; Parte 2: AND entre INC e IND
+      (list
+        (simple-circuit '(INC IND) '(w2) (prim-chip (chip_and))) ; w2 = INC AND IND
+
+        ;; Parte 3: OR entre los dos resultados anteriores
+        (simple-circuit '(w1 w2) '(OUT) (prim-chip (chip_or)))   ; OUT = w1 OR w2
+      )
+      '(INA INB INC IND)  
+      '(OUT)              
+    )
+  )
+)
